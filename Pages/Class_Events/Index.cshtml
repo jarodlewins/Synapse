@@ -1,0 +1,81 @@
+﻿@page
+@model Synapse.Pages.Class_Events.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Class_Event[0].StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Class_Event[0].EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Class_Event[0].NumStudents)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Class_Event[0].NumInstructors)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Class_Event[0].Organization)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Class_Event[0].Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Class_Event)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumStudents)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumInstructors)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Organization)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @if ((await AuthorizationService.AuthorizeAsync(
+                    User, item,
+                    Class_EventOperations.Update)).Succeeded)
+                    {
+                        <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a>
+                        <text> | </text>
+                    }
+
+                    <a asp-page="./Details" asp-route-id="@item.ID">Details</a>
+
+                    @if ((await AuthorizationService.AuthorizeAsync(
+                    User, item,
+                    Class_EventOperations.Delete)).Succeeded)
+                    {
+                        <text> | </text>
+                        <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
